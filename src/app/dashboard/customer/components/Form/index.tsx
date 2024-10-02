@@ -1,5 +1,6 @@
-'use Cliente';
+'use client';
 
+import { Input } from '@/components/Input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -19,12 +20,12 @@ const schema = z.object({
       message: 'O número de telefone dever estar (DD) 999999999',
     }
   ),
-  adress: z.string(),
+  address: z.string(),
 });
 
 type FormData = z.infer<typeof schema>;
 
-export function NewCustomerForm() {
+export default function NewCustomerForm() {
   const {
     register,
     handleSubmit,
@@ -34,9 +35,9 @@ export function NewCustomerForm() {
   });
 
   return (
-    <form>
-      <label>Nome completo</label>
-      <input type="text" placeholder="Digite o nome completo..." />
+    <form className="mt-6 flex flex-col">
+      <label className="mb-1 text-lg font-medium">Nome completo</label>
+      <Input />
     </form>
   );
 }
