@@ -38,7 +38,7 @@ export async function POST(req: Request) {
   }
 }
 
-// Rota para deletar um cliente
+// RROTA PARA DELETAR UM CLIENTE
 export async function DELETE(req: Request) {
   // Verifica se o usuário está autenticado
   const session = await getServerSession(authOptions);
@@ -61,8 +61,12 @@ export async function DELETE(req: Request) {
     },
   });
 
+  // Verifica se o cliente possui um ticket
   if (findTicket) {
-    return NextResponse.json({ error: 'Customer has ticket' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Cliente possui um ticket' },
+      { status: 400 }
+    );
   }
 
   try {

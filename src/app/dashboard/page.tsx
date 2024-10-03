@@ -1,8 +1,9 @@
 import { Container } from '@/components/Container';
 import { authOptions } from '@/lib/auth';
+import prismaClient from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { TicketItem } from './components/Ticket';
 
 export default async function Dashboard() {
@@ -12,31 +13,58 @@ export default async function Dashboard() {
     redirect('/');
   }
 
+  const tickets = await prismaClient.ticket.findMany({
+    where: {
+      userId: session.user.id,
+      status: 'ABERTO',
+    },
+    include: {
+      customer: true,
+    },
+  });
+
   return (
     <Container>
-      <main className='mt-9 mb-2'>
+      <main className="mb-2 mt-9">
         <div className="flex items-center justify-between">
           <h1 className="text-3xl font-bold">Chamados</h1>
-          <Link href="/dashboard/new" className="rounded bg-blue-500 px-4 py-1 text-white">
+          <Link
+            href="/dashboard/new"
+            className="rounded bg-blue-500 px-4 py-1 text-white"
+          >
             Abrir chamado
           </Link>
         </div>
 
-        <table className='min-w-full my-2'>
-          <thead>
-            <tr>
-              <th className='font-medium text-left pl-1'>CLIENTE</th>
-              <th className='font-medium text-left hidden sm:block'>DATA CADASTRO</th>
-              <th className='font-medium text-left'>STATUS</th>
-              <th className='font-medium text-left'>#</th>
-            </tr>
-          </thead>
+        {/* Renderiza a tabela apenas se houver tickets */}
+        {tickets.length > 0 ? (
+          <table className="my-2 min-w-full">
+            <thead>
+              <tr>
+                <th className="pl-1 text-left font-medium">CLIENTE</th>
+                <th className="hidden text-left font-medium sm:block">
+                  DATA CADASTRO
+                </th>
+                <th className="text-left font-medium">STATUS</th>
+                <th className="text-left font-medium">#</th>
+              </tr>
+            </thead>
 
-          <tbody>
-            <TicketItem />
-          </tbody>
-
-        </table>
+            <tbody>
+              {tickets.map((ticket) => (
+                <TicketItem
+                  key={ticket.id}
+                  customer={ticket.customer}
+                  ticket={ticket}
+                />
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <div className="mt-12 text-center">
+            <h1 className="text-gray-600">Nenhum chamado aberto</h1>
+          </div>
+        )}
       </main>
     </Container>
   );

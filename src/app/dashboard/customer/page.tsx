@@ -37,13 +37,14 @@ export default async function Customer() {
             <CardCustomer key={customer.id} customer={customer} />
           ))}
         </section>
-        <div className="mt-28 flex items-center justify-center">
-          {customers.length === 0 && (
-            <h1 className="text-2xl text-gray-600">
+
+        {customers.length === 0 && (
+          <div className="mt-12 text-center">
+            <h1 className="text-gray-600">
               Você ainda não possui nenhum cliente
             </h1>
-          )}
-        </div>
+          </div>
+        )}
       </main>
     </Container>
   );
