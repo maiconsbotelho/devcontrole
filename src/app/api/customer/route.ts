@@ -86,3 +86,6 @@ export async function DELETE(req: Request) {
     );
   }
 }
+
+type User = { id: number; name: string; age: number };
+type UserInfo = Pick<User, 'name' | 'age'>;
