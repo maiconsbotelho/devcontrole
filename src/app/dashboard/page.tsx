@@ -13,6 +13,7 @@ export default async function Dashboard() {
     redirect('/');
   }
 
+  // Busca os tickets do usuário logado
   const tickets = await prismaClient.ticket.findMany({
     where: {
       userId: session.user.id,
@@ -20,6 +21,9 @@ export default async function Dashboard() {
     },
     include: {
       customer: true,
+    },
+    orderBy: {
+      created_at: 'desc',
     },
   });
 

@@ -21,7 +21,7 @@ const Header = () => {
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between">
         <Link href="/">
           <h1 className="pl-1 text-2xl font-bold duration-300 hover:tracking-widest">
-            <span className="text-blue-500">DEV</span> CONTROLE
+            <span className="text-blue-500">HELP</span> DESK
           </h1>
         </Link>
 
